@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase';
-import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'bs-navbar',
@@ -11,13 +9,11 @@ import { Observable } from 'rxjs';
 })
 export class BsNavbarComponent {
   
-  user$: Observable<firebase.User>;
   isCollapsed = true;
-  constructor(private afAuth: AngularFireAuth) {
-       this.user$ = afAuth.authState;
-   }
+  constructor(public auth: AuthService) {
+  }
 
   logout() {
-    this.afAuth.auth.signOut();
+    this.auth.logout();
   }
 }

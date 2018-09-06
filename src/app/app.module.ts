@@ -17,6 +17,8 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { LoginComponent } from './login/login.component';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AuthService } from 'src/app/auth.service';
+import { AuthGuard } from 'src/app/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
     MyOrdersComponent,
     AdminProductsComponent,
     AdminOrdersComponent,
-    LoginComponent    
+    LoginComponent
+      
   ],
   imports: [
     BrowserModule,
@@ -38,18 +41,20 @@ import { AngularFireAuth } from 'angularfire2/auth';
     AngularFireModule.initializeApp(environment.firebase),          
     RouterModule.forRoot([
       { path:'', component:HomeComponent },
-      { path:'products', component:ProductsComponent },      
+      { path:'products', component:ProductsComponent }, 
+      { path:'login', component:LoginComponent },      
       { path:'shopping-cart', component:ShoppingCartComponent },
-      { path:'check-out', component:CheckOutComponent },
-      { path:'order-success', component:OrderSuccessComponent },
-      { path:'login', component:LoginComponent },
-      { path:'admin/products', component:AdminProductsComponent },
-      { path:'admin/orders', component:AdminOrdersComponent },
-      { path:'my/orders', component:MyOrdersComponent }
+
+      { path:'check-out', component:CheckOutComponent, canActivate: [AuthGuard] },
+      { path:'order-success', component:OrderSuccessComponent, canActivate: [AuthGuard] },
+      { path:'my/orders', component:MyOrdersComponent, canActivate: [AuthGuard] },
+      
+      { path:'admin/products', component:AdminProductsComponent,canActivate: [AuthGuard] },
+      { path:'admin/orders', component:AdminOrdersComponent, canActivate: [AuthGuard] }
     ])
 
   ],
-  providers: [AngularFireAuth],
+  providers: [AngularFireAuth, AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
