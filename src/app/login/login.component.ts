@@ -13,7 +13,7 @@ export class LoginComponent  {
     
    }
 
-   login() {
+   login() {     
      this.auth.login();
    }
 }
