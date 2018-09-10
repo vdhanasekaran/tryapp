@@ -13,10 +13,14 @@ export class ProductService {
   }
 
   getAll() {
-    return this.db.list('/products').valueChanges();
+    return this.db.list('/products');
   }
 
   get(productId:string) {
-    return this.db.list('/products',ref => ref.orderByChild('title').equalTo(productId).limitToFirst(1)).valueChanges();    
+    return this.db.object('/products/' + productId);
+  }
+
+  update(productId,product) {
+    return this.db.object('/products/'+productId).update(product);
   }
 }

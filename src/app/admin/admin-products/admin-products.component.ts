@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../product.service';
+import { Product } from 'src/app/models/product';
 
 @Component({
   selector: 'app-admin-products',
@@ -7,11 +8,17 @@ import { ProductService } from '../../product.service';
   styleUrls: ['./admin-products.component.css']
 })
 export class AdminProductsComponent implements OnInit {
-  products$;
+  products : Product[];
 
   constructor(private productService:ProductService) {
-     this.products$ = this.productService.getAll();
-     console.log(this.products$);
+     this.productService.getAll().snapshotChanges().subscribe(products => {
+       this.products = [];
+       products.forEach(product => {
+          var y=product.payload.toJSON();
+          y["$key"] = product.key;
+          this.products.push(y as Product);
+       });
+     });     
    }
 
   ngOnInit() {
