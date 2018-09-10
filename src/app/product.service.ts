@@ -11,4 +11,12 @@ export class ProductService {
   create(product) {
     return this.db.list('/products').push(product);
   }
+
+  getAll() {
+    return this.db.list('/products').valueChanges();
+  }
+
+  get(productId:string) {
+    return this.db.list('/products',ref => ref.orderByChild('title').equalTo(productId).limitToFirst(1)).valueChanges();    
+  }
 }
