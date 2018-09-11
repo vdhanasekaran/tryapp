@@ -25,17 +25,22 @@ export class ProductFormComponent implements OnInit {
     
     categoryService.getCategories().snapshotChanges().subscribe(item => {
       this.categoriesList = [];      
-      item.forEach(category => {
+      item.forEach(category => {              
         var y = category.payload.toJSON();
         y["$key"] = category.key;
         this.categoriesList.push(y as Category);                
       })
-      console.log("Cat complete");
+      
       if(this.id) {
-        this.productService.get(this.id).snapshotChanges().subscribe(res => {
+        this.productService.get(this.id).snapshotChanges().subscribe(res => {          
           var y = res.payload.toJSON();
-          y["$key"] = res.key;        
-          this.product = y as Product;         
+          if(y != null) {
+          console.log(res);          
+            y["$key"] = res.key;        
+          this.product = y as Product;  
+          } else {
+            this.product = {};
+          }
         });
       }
     });
@@ -51,6 +56,14 @@ export class ProductFormComponent implements OnInit {
       this.productService.create(product);      
     }
     this.router.navigate(['/admin/products']);
+  }
+
+  delete() {
+    if(!confirm('Are you sure you want to delete this product?')) return;
+
+    this.productService.delete(this.id);
+    this.router.navigate(['/admin/products']);
+    
   }
   
 }

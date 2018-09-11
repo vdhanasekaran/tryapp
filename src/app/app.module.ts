@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AngularFireModule } from 'angularfire2';
 import { FormsModule } from '@angular/forms';
 import { CustomFormsModule } from 'ng2-validation';
+import { DataTableModule } from 'angular-6-datatable';
 
 import { AppComponent } from './app.component';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
@@ -51,6 +52,7 @@ import { ProductService } from './product.service';
     AngularFireDatabaseModule,  
     FormsModule,
     CustomFormsModule,
+    DataTableModule,
     RouterModule.forRoot([
       { path:'', component:HomeComponent },
       { path:'products', component:ProductsComponent }, 

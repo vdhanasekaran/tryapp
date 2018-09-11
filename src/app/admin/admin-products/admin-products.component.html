@@ -1,22 +1,46 @@
 <p>
   <a routerLink="/admin/products/new" class="btn btn-primary">New Product</a>
 </p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let p of products">
-            <td>{{ p.title }}</td>
-            <td>{{ p.price }}</td>
-            <td>
-                <a [routerLink]="['/admin/products/',p.$key]">Edit</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<p>
+    <input type="text"
+           #query
+           (keyup)="filter(query.value)"
+           class="form-control" placeholder="search...">
+</p>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <strong>Products</strong>
+        <span *ngIf="products" style="margin-left: 80%" class="badge pull-right">Total Products : {{products.length}}</span>
+    </div>
+    <div class="panel-body">
+            <table class="table table-striped" [mfData]="filteredProducts" #mf="mfDataTable" [mfRowsOnPage]="5">
+                    <thead>
+                    <tr>            
+                        <th style="width: 60%">
+                            <mfDefaultSorter by="title">Title</mfDefaultSorter>
+                        </th>
+                        <th style="width: 20%">
+                            <mfDefaultSorter by="price">Price</mfDefaultSorter>
+                        </th> 
+                        <th></th>                    
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let product of mf.data">            
+                        <td>{{product.title}}</td>
+                        <td>{{product.price}}</td> 
+                        <td>
+                            <a [routerLink]="['/admin/products/',product.$key]">Edit</a>                    
+                        </td>          
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+            </table>
+    </div>
+</div>
