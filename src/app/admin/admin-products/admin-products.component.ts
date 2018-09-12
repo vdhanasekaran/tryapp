@@ -15,15 +15,19 @@ export class AdminProductsComponent implements OnInit,OnDestroy {
   subscription: Subscription;  
   constructor(private productService:ProductService) {
      this.subscription = this.productService.getAll().snapshotChanges().subscribe(products => {
-       this.products = [];
-       this.filteredProducts = [];       
-       products.forEach(product => {
-          var y=product.payload.toJSON();
-          y["$key"] = product.key;
-          this.products.push(y as Product);
-          this.filteredProducts.push(y as Product);
-       });
+     this.initializeTable(products);
      });     
+   }
+
+  initializeTable(products) {
+    this.products = [];
+    this.filteredProducts = [];       
+    products.forEach(product => {
+       var y=product.payload.toJSON();
+       y["$key"] = product.key;
+       this.products.push(y as Product);
+       this.filteredProducts.push(y as Product);
+    });
    }
 
   ngOnInit() {

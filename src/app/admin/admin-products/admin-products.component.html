@@ -10,7 +10,7 @@
 <div class="panel panel-info">
     <div class="panel-heading">
         <strong>Products</strong>
-        <span *ngIf="products" style="margin-left: 80%" class="badge pull-right">Total Products : {{products.length}}</span>
+        <span *ngIf="products" style="margin-left: 80%" class="badge pull-right">Count : {{products.length}}</span>
     </div>
     <div class="panel-body">
             <table class="table table-striped" [mfData]="filteredProducts" #mf="mfDataTable" [mfRowsOnPage]="5">

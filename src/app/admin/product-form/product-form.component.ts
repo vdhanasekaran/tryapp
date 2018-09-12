@@ -14,7 +14,7 @@ import { Product } from 'src/app/models/product';
 })
 export class ProductFormComponent implements OnInit {
   categoriesList:Category[];
-  product= {};
+  product:Product = new Product();
   id;
   constructor(
     categoryService: CategoryService,
@@ -39,7 +39,7 @@ export class ProductFormComponent implements OnInit {
             y["$key"] = res.key;        
           this.product = y as Product;  
           } else {
-            this.product = {};
+            this.product = new Product();
           }
         });
       }
