@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/product.service';
 import { CategoryService } from 'tryapp/src/app/category.service';
+import { Category } from '../models/category';
+import { ActivatedRoute } from '@angular/router';
+import { Product } from '../models/product';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-products',
@@ -8,10 +12,45 @@ import { CategoryService } from 'tryapp/src/app/category.service';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent {
-  products$;
-  categories$;
-  constructor(private productService:ProductService,private categoryService:CategoryService) {
-    this.products$ = productService.getAll().valueChanges();
-    this.categories$ = categoryService.getAll().valueChanges();
+  products$;   
+  categoriesList:Category[];
+  category:string;
+  productList: Product[] = [];
+  filteredProductList: Product[] = [];
+
+  constructor(
+    route: ActivatedRoute,
+    private productService:ProductService,
+    private categoryService:CategoryService) {
+      this.products$ = productService.getAll().snapshotChanges().switchMap(item => {        
+        this.productList = [];
+        this.filteredProductList = [];
+        item.forEach(product => {
+          var y = product.payload.toJSON();
+          if(y != null) {                                          
+            this.productList.push(y as Product);              
+          }
+        });
+        this.filteredProductList = this.productList;       
+        return route.queryParamMap;
+        })
+        .subscribe(params => {        
+          this.category = params.get('category');
+            
+          this.filteredProductList = 
+            (this.category) ? 
+              this.productList.filter(p => 
+                p.category.toLowerCase().includes(this.category.toLowerCase())):
+                this.productList;          
+        });              
+
+      categoryService.getAll().snapshotChanges().subscribe(item => {
+        this.categoriesList = [];      
+        item.forEach(category => {              
+          var y = category.payload.toJSON();
+          y["$key"] = category.key;
+          this.categoriesList.push(y as Category);                
+        });        
+      });
   }
 }
