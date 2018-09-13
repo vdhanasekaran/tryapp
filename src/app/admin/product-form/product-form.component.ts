@@ -23,7 +23,7 @@ export class ProductFormComponent implements OnInit {
     private productService:ProductService) {
     this.id = this.route.snapshot.paramMap.get('id');    
     
-    categoryService.getCategories().snapshotChanges().subscribe(item => {
+    categoryService.getAll().snapshotChanges().subscribe(item => {
       this.categoriesList = [];      
       item.forEach(category => {              
         var y = category.payload.toJSON();

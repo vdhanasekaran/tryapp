@@ -10,7 +10,7 @@ export class CategoryService {
   categoryList:AngularFireList<any>;
   constructor(private db:AngularFireDatabase) { }
   
-  getCategories()  {
+  getAll()  {
     this.categoryList =  this.db.list('categories');  
     return this.categoryList;
   }

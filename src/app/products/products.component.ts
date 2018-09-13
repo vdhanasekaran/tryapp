@@ -12,6 +12,6 @@ export class ProductsComponent {
   categories$;
   constructor(private productService:ProductService,private categoryService:CategoryService) {
     this.products$ = productService.getAll().valueChanges();
-    this.categories$ = categoryService.getAll();
+    this.categories$ = categoryService.getAll().valueChanges();
   }
 }
