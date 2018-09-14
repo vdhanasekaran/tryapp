@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/product.service';
-import { CategoryService } from 'tryapp/src/app/category.service';
 import { Category } from '../models/category';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product';
@@ -12,16 +11,15 @@ import 'rxjs/add/operator/switchMap';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent {
-  products$;   
-  categoriesList:Category[];
+  products$;     
   category:string;
   productList: Product[] = [];
   filteredProductList: Product[] = [];
 
   constructor(
     route: ActivatedRoute,
-    private productService:ProductService,
-    private categoryService:CategoryService) {
+    private productService:ProductService
+    ) {
       this.products$ = productService.getAll().snapshotChanges().switchMap(item => {        
         this.productList = [];
         this.filteredProductList = [];
@@ -42,15 +40,6 @@ export class ProductsComponent {
               this.productList.filter(p => 
                 p.category.toLowerCase().includes(this.category.toLowerCase())):
                 this.productList;          
-        });              
-
-      categoryService.getAll().snapshotChanges().subscribe(item => {
-        this.categoriesList = [];      
-        item.forEach(category => {              
-          var y = category.payload.toJSON();
-          y["$key"] = category.key;
-          this.categoriesList.push(y as Category);                
-        });        
-      });
+        });
   }
 }
