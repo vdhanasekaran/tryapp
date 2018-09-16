@@ -8,7 +8,6 @@ import 'rxjs/add/operator/take';
 })
 export class ShoppingCartService {
   
-  
   constructor(private db:AngularFireDatabase) { }
 
   private create() {
@@ -17,11 +16,12 @@ export class ShoppingCartService {
     });
   }
 
-  private getCart(cartId:string) {
+  async getCart() {
+    let cartId = await this.getOrCreateCartId()
     return this.db.object('/shopping-cart/'+ cartId);
   }
 
-  private async getOrCreateCartId(product: Product) {
+  private async getOrCreateCartId() : Promise<string> {
     let cartId = localStorage.getItem('cartId');    
     if(cartId)  return cartId;    
 
@@ -31,7 +31,7 @@ export class ShoppingCartService {
   }
 
   private getItem(cartId:string,productKey:string) {
-    return this.db.object('/shopping-cart/' + cartId + '/items/' + productKey);    
+    return this.db.object('/shopping-cart/' + cartId + '/items/' + productKey);        
   }
 
   private mapProduct(productWithKey:Product) {
@@ -44,13 +44,13 @@ export class ShoppingCartService {
   }
 
   async addToCart(product:Product) {    
-    let cartId = await this.getOrCreateCartId(product); 
-    console.log(cartId + " " + product.$key);
+    let cartId = await this.getOrCreateCartId();     
     let item = this.getItem(cartId,product.$key);    
     item.snapshotChanges().take(1).subscribe(p => {
     item.update({ product: this.mapProduct(product), 
-      quantity: (p.payload.toJSON() ? p.payload.toJSON()["quantity"] : 0) + 1 });
-      
+      quantity: (p.payload.toJSON() ? p.payload.toJSON()["quantity"] : 0) + 1 });      
     });
   }
+
+
 }

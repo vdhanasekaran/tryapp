@@ -12,11 +12,17 @@ export class ProductCardComponent  {
 
   @Input("product") product;
   @Input("show-actions") showActions=true;
+  @Input('shopping-cart') shoppingCart;
 
   constructor(private cartService: ShoppingCartService) { }
 
-  addToCart(product: Product) {         
-     this.cartService.addToCart(product);
+  addToCart() {         
+     this.cartService.addToCart(this.product);
   }
 
+  getQuantity() {
+    if(!this.shoppingCart) return 0;    
+    return (this.shoppingCart.items && this.shoppingCart.items[this.product.$key]) 
+       ? this.shoppingCart.items[this.product.$key].quantity : 0;    
+  }
 }
