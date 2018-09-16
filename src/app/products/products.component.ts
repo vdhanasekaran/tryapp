@@ -24,7 +24,8 @@ export class ProductsComponent {
         this.productList = [];
         this.filteredProductList = [];
         item.forEach(product => {
-          var y = product.payload.toJSON();
+          var y = product.payload.toJSON();          
+          y["$key"] = product.key;          
           if(y != null) {                                          
             this.productList.push(y as Product);              
           }

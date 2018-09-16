@@ -30,6 +30,7 @@ import { CategoryService } from './category.service';
 import { ProductService } from './product.service';
 import { ProductFilterComponent } from './products/product-filter/product-filter.component';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { ShoppingCartService } from './shopping-cart.service';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { ProductCardComponent } from './product-card/product-card.component';
     ])
 
   ],
-  providers: [AngularFireAuth, AuthService, AuthGuard, UserService, AdminAuthGuard, CategoryService,ProductService],
+  providers: [AngularFireAuth, AuthService, AuthGuard, UserService, AdminAuthGuard, CategoryService,
+    ProductService, ShoppingCartService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
