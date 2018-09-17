@@ -20,6 +20,10 @@ export class ProductCardComponent  {
      this.cartService.addToCart(this.product);
   }
 
+  removeFromCart() {
+    this.cartService.removeFromCart(this.product);
+  }
+
   getQuantity() {
     if(!this.shoppingCart) return 0;    
     return (this.shoppingCart.items && this.shoppingCart.items[this.product.$key]) 
