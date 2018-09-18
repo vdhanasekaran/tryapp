@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/user.service';
+import { ShoppingCartService } from './shopping-cart.service';
 
 @Component({
   selector: 'app-root',

@@ -2,32 +2,43 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Product } from './models/product';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/map';
 import { ShoppingCart } from './models/shopping-cart';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingCartService {  
   
-  constructor(private db:AngularFireDatabase) { }
+  public cart$:Observable<ShoppingCart>;
 
-  private create() {
+  constructor(private db:AngularFireDatabase) {
+     this.getOrCreateCartId();
+     console.log("create called");
+   }
+
+  public create() {
     return this.db.list('/shopping-cart').push({
       dateCreated: new Date().getTime()
     });
   }
 
-  async getCart(): Promise<AngularFireObject<ShoppingCart>> {
-    let cartId = await this.getOrCreateCartId()
-    return this.db.object('/shopping-cart/'+ cartId);
+  async getCart(): Promise<Observable<ShoppingCart>> {    
+    let cartId = await this.getOrCreateCartId();        
+    return this.db.object('/shopping-cart/'+ cartId).valueChanges().map(x =>{
+        return new ShoppingCart(x['items']);
+    });
   }
 
-  private async getOrCreateCartId() : Promise<string> {
+  private getOrCreateCartId() : string {    
+
     let cartId = localStorage.getItem('cartId');    
     if(cartId)  return cartId;    
-
-    let result = await this.create();    
+        
+    let result = this.create();        
     localStorage.setItem('cartId',result.key);
+    console.log(result.key);
     return result.key;        
   }
 
@@ -52,9 +63,8 @@ export class ShoppingCartService {
     this.updateQuantity(product,1);
   }
 
-  private async updateQuantity(product:Product,change:number) {
-    console.log(change);
-    let cartId = await this.getOrCreateCartId();     
+  private async updateQuantity(product:Product,change:number) {    
+    let cartId = await this.getOrCreateCartId();        
     let item = this.getItem(cartId,product.$key);    
     item.snapshotChanges().take(1).subscribe(p => {
     item.update({ product: this.mapProduct(product), 

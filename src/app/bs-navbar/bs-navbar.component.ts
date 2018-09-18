@@ -4,6 +4,8 @@ import { AuthService } from 'src/app/auth.service';
 import { UserService } from 'src/app/user.service';
 import { AppUser } from 'src/app/models/app-user';
 import { ShoppingCartService } from '../shopping-cart.service';
+import { Observable } from 'rxjs';
+import { ShoppingCart } from '../models/shopping-cart';
 
 @Component({
   selector: 'bs-navbar',
@@ -14,7 +16,7 @@ export class BsNavbarComponent implements OnInit {
   
   appUser:AppUser;
   isCollapsed = true;
-  shoppingCartItemCount:number;
+  cart$:Observable<ShoppingCart>;
   constructor(private auth: AuthService, private shoppingCartService: ShoppingCartService) {
     
   }
@@ -24,13 +26,11 @@ export class BsNavbarComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.auth.appUser$.subscribe(appUser => this.appUser = appUser);
-    let cart$ = await this.shoppingCartService.getCart();
-    cart$.valueChanges().subscribe(cart => {
-      this.shoppingCartItemCount= 0;
-      for(let productId in cart.items) {
-        this.shoppingCartItemCount = this.shoppingCartItemCount + cart.items[productId].quantity;
-      }
-    });
+    this.auth.appUser$.subscribe(appUser => this.appUser = appUser);        
+    this.cart$ = await this.shoppingCartService.getCart();
+  }
+
+  ngAfterViewInit() {
+    
   }
 }

@@ -6,6 +6,7 @@ import { Product } from '../models/product';
 import 'rxjs/add/operator/switchMap';
 import { ShoppingCartService } from '../shopping-cart.service';
 import { Subscription } from 'rxjs';
+import { ShoppingCart } from '../models/shopping-cart';
 
 @Component({
   selector: 'app-products',
@@ -17,14 +18,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
   products$;     
   category:string;
   productList: Product[] = [];
-  filteredProductList: Product[] = [];
-  cart:any;
+  filteredProductList: Product[] = [];  
   subscription:Subscription;
-
+  cart;
   constructor(
     route: ActivatedRoute,
     private productService:ProductService,
-    private shoppingCartService: ShoppingCartService
+    public shoppingCartService: ShoppingCartService
     ) {
 
       this.products$ = productService.getAll().snapshotChanges().switchMap(item => {        
@@ -51,11 +51,15 @@ export class ProductsComponent implements OnInit, OnDestroy {
         });
   }
 
-  async ngOnInit() {
-   this.subscription = (await this.shoppingCartService.getCart()).valueChanges().subscribe(cart => this.cart = cart);     
+  async ngOnInit() {    
+  }
+
+  async ngAfterViewInit() {
+   this.subscription = (await this.shoppingCartService.getCart()).subscribe(cart => this.cart = cart);         
+   //this.shoppingCartService.cart$.subscribe(cart => this.cart = cart);
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+   this.subscription.unsubscribe();
   }
 }
