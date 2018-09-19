@@ -14,11 +14,15 @@ export class ProductCardComponent  {
 
   @Input("product") product;
   @Input("show-actions") showActions=true;
-  @Input('shopping-cart') shoppingCart: ShoppingCart;
+  @Input('shopping-cart') shoppingCart: ShoppingCart;  
 
-  constructor(private cartService: ShoppingCartService) { }
+  constructor(private cartService: ShoppingCartService) {
+    console.log("log cart");    
+   }
   
   addToCart() {         
+    console.log("Product cart called");
+    console.log(this.product);
     this.cartService.addToCart(this.product);
   }
 }

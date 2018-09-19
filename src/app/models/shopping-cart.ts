@@ -6,8 +6,7 @@ export class ShoppingCart {
    items: ShoppingCartItem[] = [];  
 
     constructor(public itemsMap:{ [productId:string]: ShoppingCartItem}) {
-      for(let productId in itemsMap) {
-        console.log(productId);
+      for(let productId in itemsMap) {        
         let item = itemsMap[productId];
         var shoppingCartItem = new ShoppingCartItem(item.product,item.quantity);
         this.items.push(shoppingCartItem);
@@ -23,18 +22,19 @@ export class ShoppingCart {
     }
 
     get totalItemsCount() {
-      let count= 0;      
-      for(let productId in this.itemsMap) {        
+      let count= 0;       
+      for(let productId in this.itemsMap) {  
+       
         count = count + this.itemsMap[productId].quantity;
-      }
+      }      
       return count;
     }
 
-    getQuantity(product: Product) {
-      console.log(product);
-      if(this.itemsMap){
+    getQuantity(product: Product) {      
+      if(this.itemsMap){        
         let item = this.itemsMap[product.$key];
-        return item ? item.quantity : 0;
+        let no = item ? item.quantity : 0;        
+        return no;
       } 
       return 0;     
     }

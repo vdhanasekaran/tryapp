@@ -47,7 +47,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
             (this.category) ? 
               this.productList.filter(p => 
                 p.category.toLowerCase().includes(this.category.toLowerCase())):
-                this.productList;          
+                this.productList; 
+          console.log("Filter");
+          console.log(this.filteredProductList);         
         });
   }
 

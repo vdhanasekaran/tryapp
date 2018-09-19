@@ -10,11 +10,10 @@ import { ShoppingCartItem } from '../models/shopping-cart-item';
 export class ProductQuantityComponent {
 
   @Input("product") product;
-  @Input('shopping-cart') shoppingCart;
-  
+  @Input('shopping-cart') shoppingCart;  
   constructor(private cartService: ShoppingCartService) { }
 
-  addToCart() {         
+  addToCart() {      
     this.cartService.addToCart(this.product);
   }
 
