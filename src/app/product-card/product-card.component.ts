@@ -16,13 +16,10 @@ export class ProductCardComponent  {
   @Input("show-actions") showActions=true;
   @Input('shopping-cart') shoppingCart: ShoppingCart;  
 
-  constructor(private cartService: ShoppingCartService) {
-    console.log("log cart");    
+  constructor(private cartService: ShoppingCartService) {        
    }
   
   addToCart() {         
-    console.log("Product cart called");
-    console.log(this.product);
     this.cartService.addToCart(this.product);
   }
 }
