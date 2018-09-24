@@ -32,6 +32,7 @@ import { ProductFilterComponent } from './products/product-filter/product-filter
 import { ProductCardComponent } from './product-card/product-card.component';
 import { ShoppingCartService } from './shopping-cart.service';
 import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
+import { OrderService } from './order.service';
 
 @NgModule({
   declarations: [
@@ -73,13 +74,11 @@ import { ProductQuantityComponent } from './product-quantity/product-quantity.co
       { path:'admin/products/new', component:ProductFormComponent,canActivate: [AuthGuard,AdminAuthGuard] },
       { path:'admin/products/:id', component:ProductFormComponent,canActivate: [AuthGuard,AdminAuthGuard] },
       { path:'admin/products', component:AdminProductsComponent,canActivate: [AuthGuard,AdminAuthGuard] },
-      { path:'admin/orders', component:AdminOrdersComponent, canActivate: [AuthGuard,AdminAuthGuard] },
-
+      { path:'admin/orders', component:AdminOrdersComponent, canActivate: [AuthGuard,AdminAuthGuard] }
     ])
-
   ],
   providers: [AngularFireAuth, AuthService, AuthGuard, UserService, AdminAuthGuard, CategoryService,
-    ProductService, ShoppingCartService],
+    ProductService, ShoppingCartService, OrderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
