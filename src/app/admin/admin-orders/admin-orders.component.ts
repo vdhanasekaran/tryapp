@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Order } from '../../models/order';
+import { Subscription } from 'rxjs';
+import { OrderService } from '../../order.service';
 
 @Component({
   selector: 'app-admin-orders',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminOrdersComponent implements OnInit {
 
-  constructor() { }
+  orders: Order[]= [];
+  
+  constructor(private orderService: OrderService) {
+     this.orderService.getOrders().valueChanges().subscribe(orders => {
+      this.initializeTable(orders);
+      });      
+   }
+
+   initializeTable(orders) {
+     console.log(orders);
+    this.orders = [];         
+    orders.forEach(order => {             
+       this.orders.push(order);       
+    });
+   }
 
   ngOnInit() {
   }
-
 }
